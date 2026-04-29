@@ -1,0 +1,30 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Local editor/system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Captures and screenshots can get large; keep folders, ignore raw outputs by default
+artifacts/captures/*.pcap
+artifacts/captures/*.pcapng
+artifacts/screenshots/*.png
+artifacts/screenshots/*.jpg
+artifacts/screenshots/*.jpeg
+
+# Secrets and local runtime config
+.env
+config.local.json
