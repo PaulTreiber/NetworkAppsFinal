@@ -68,3 +68,5 @@ python -m ref620_modbus_client.app
 
 - `git` does not appear to be installed in this environment yet, so I could not initialize the repository locally.
 - The ABB manuals and assignment brief are already organized under `docs/`.
+
+test
