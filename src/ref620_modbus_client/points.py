@@ -1,13 +1,381 @@
-"""Point metadata models."""
+"""REF620 Modbus point metadata."""
 
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
 class PointDefinition:
     name: str
     address: int
+    data_type: str
     register_count: int = 1
     description: str = ""
+    label: str = ""
     scale_factor: float = 1.0
     offset: float = 0.0
+    unit: str = ""
+    bit: Optional[int] = None
+    source: str = ""
+
+
+DEFAULT_POINTS = [
+    PointDefinition(
+        name="ia_current",
+        address=2000,
+        data_type="s32",
+        register_count=2,
+        scale_factor=100,
+        unit="A",
+        description="IA amplitude magnitude of instantaneous value",
+        label="Phase A current instantaneous magnitude",
+        source="Table 110 CMMXU1, page 43",
+    ),
+    PointDefinition(
+        name="ib_current",
+        address=2002,
+        data_type="s32",
+        register_count=2,
+        scale_factor=100,
+        unit="A",
+        description="IB amplitude magnitude of instantaneous value",
+        label="Phase B current instantaneous magnitude",
+        source="Table 110 CMMXU1, page 43",
+    ),
+    PointDefinition(
+        name="ic_current",
+        address=2004,
+        data_type="s32",
+        register_count=2,
+        scale_factor=100,
+        unit="A",
+        description="IC amplitude magnitude of instantaneous value",
+        label="Phase C current instantaneous magnitude",
+        source="Table 110 CMMXU1, page 43",
+    ),
+    PointDefinition(
+        name="ig_ground_current",
+        address=2072,
+        data_type="s32",
+        register_count=2,
+        scale_factor=100,
+        unit="A",
+        description="Ground current amplitude magnitude of instantaneous value",
+        label="Ground current instantaneous magnitude",
+        source="Table 113 RESCMMXU1, page 44",
+    ),
+    PointDefinition(
+        name="va_voltage",
+        address=2244,
+        data_type="u16",
+        scale_factor=100,
+        unit="V",
+        description="VA amplitude magnitude of instantaneous value",
+        label="Phase A voltage magnitude",
+        source="Table 114 VMMXU1, page 45",
+    ),
+    PointDefinition(
+        name="vb_voltage",
+        address=2245,
+        data_type="u16",
+        scale_factor=100,
+        unit="V",
+        description="VB amplitude magnitude of instantaneous value",
+        label="Phase B voltage magnitude",
+        source="Table 114 VMMXU1, page 45",
+    ),
+    PointDefinition(
+        name="vc_voltage",
+        address=2246,
+        data_type="u16",
+        scale_factor=100,
+        unit="V",
+        description="VC amplitude magnitude of instantaneous value",
+        label="Phase C voltage magnitude",
+        source="Table 114 VMMXU1, page 45",
+    ),
+    PointDefinition(
+        name="vab_voltage",
+        address=2247,
+        data_type="u16",
+        scale_factor=100,
+        unit="V",
+        description="VAB amplitude magnitude of instantaneous value",
+        label="Line voltage VAB magnitude",
+        source="Table 114 VMMXU1, page 45",
+    ),
+    PointDefinition(
+        name="vbc_voltage",
+        address=2248,
+        data_type="u16",
+        scale_factor=100,
+        unit="V",
+        description="VBC amplitude magnitude of instantaneous value",
+        label="Line voltage VBC magnitude",
+        source="Table 114 VMMXU1, page 45",
+    ),
+    PointDefinition(
+        name="vca_voltage",
+        address=2249,
+        data_type="u16",
+        scale_factor=100,
+        unit="V",
+        description="VCA amplitude magnitude of instantaneous value",
+        label="Line voltage VCA magnitude",
+        source="Table 114 VMMXU1, page 45",
+    ),
+    PointDefinition(
+        name="frequency",
+        address=2378,
+        data_type="u16",
+        scale_factor=100,
+        unit="Hz",
+        description="Frequency instantaneous value",
+        label="Frequency instantaneous value",
+        source="Table 128 FMMXU1, page 52",
+    ),
+    PointDefinition(
+        name="power_factor",
+        address=2388,
+        data_type="s16",
+        scale_factor=100,
+        description="Average power factor",
+        label="Three-phase average power factor",
+        source="Table 119 PEMMXU1, page 47",
+    ),
+    PointDefinition(
+        name="total_apparent_power",
+        address=2389,
+        data_type="s32",
+        register_count=2,
+        scale_factor=100,
+        unit="VA",
+        description="Total apparent power",
+        label="Three-phase total apparent power",
+        source="Table 119 PEMMXU1, page 47",
+    ),
+    PointDefinition(
+        name="total_reactive_power",
+        address=2391,
+        data_type="s32",
+        register_count=2,
+        scale_factor=100,
+        unit="VAr",
+        description="Total reactive power",
+        label="Three-phase total reactive power",
+        source="Table 119 PEMMXU1, page 47",
+    ),
+    PointDefinition(
+        name="total_active_power",
+        address=2393,
+        data_type="s32",
+        register_count=2,
+        scale_factor=100,
+        unit="W",
+        description="Total active power",
+        label="Three-phase total active power",
+        source="Table 119 PEMMXU1, page 47",
+    ),
+]
+
+
+STATUS_POINTS = [
+    PointDefinition(
+        name="ssr1",
+        address=9000,
+        data_type="u16",
+        label="System Status Register 1",
+        description="System Status Register, 1",
+        source="Table 2 System Status Registers, page 11",
+    ),
+    PointDefinition(
+        name="ssr2",
+        address=9001,
+        data_type="u16",
+        label="System Status Register 2",
+        description="System Status Register, 2",
+        source="Table 2 System Status Registers, page 11",
+    ),
+    PointDefinition(
+        name="ssr3",
+        address=9002,
+        data_type="u16",
+        label="System Status Register 3",
+        description="System Status Register, 3",
+        source="Table 2 System Status Registers, page 11",
+    ),
+    PointDefinition(
+        name="setting_group_in_use",
+        address=9006,
+        data_type="u16",
+        label="Parameter setting group in use",
+        description="Parameter Setting Group in Use",
+        source="Table 2.1 Select Parameter Setting Group Registers, page 12",
+    ),
+]
+
+
+BREAKER_STATUS_POINTS = [
+    PointDefinition(
+        name="cb52_1_close_enabled",
+        address=320,
+        data_type="bit",
+        bit=2,
+        label="52-1 closing enabled",
+        description="Closing is enabled based on the input status",
+        source="Table 92 CBCSWI1, page 31",
+    ),
+    PointDefinition(
+        name="cb52_1_open_enabled",
+        address=320,
+        data_type="bit",
+        bit=6,
+        label="52-1 opening enabled",
+        description="Opening is enabled based on the input status",
+        source="Table 92 CBCSWI1, page 31",
+    ),
+    PointDefinition(
+        name="cb52_1_closed_position",
+        address=320,
+        data_type="bit",
+        bit=12,
+        label="52-1 apparatus closed position",
+        description="Apparatus closed position",
+        source="Table 92 CBCSWI1, page 31",
+    ),
+    PointDefinition(
+        name="cb52_1_position_ok",
+        address=320,
+        data_type="bit",
+        bit=14,
+        label="52-1 apparatus position OK",
+        description="Apparatus position is ok",
+        source="Table 92 CBCSWI1, page 31",
+    ),
+    PointDefinition(
+        name="cb52_1_open_position",
+        address=321,
+        data_type="bit",
+        bit=0,
+        label="52-1 apparatus open position",
+        description="Apparatus open position",
+        source="Table 92 CBCSWI1, page 31",
+    ),
+    PointDefinition(
+        name="cb52_1_position_indication_open",
+        address=324,
+        data_type="bit",
+        bit=0,
+        label="52-1 position indication open",
+        description="Apparatus position indication - Open",
+        source="Table 92 CBCSWI1, page 32",
+    ),
+    PointDefinition(
+        name="cb52_1_position_indication_close",
+        address=324,
+        data_type="bit",
+        bit=2,
+        label="52-1 position indication close",
+        description="Apparatus position indication - Close",
+        source="Table 92 CBCSWI1, page 32",
+    ),
+    PointDefinition(
+        name="cb52_1_position_indication_ok",
+        address=324,
+        data_type="bit",
+        bit=4,
+        label="52-1 position indication OK",
+        description="Apparatus position indication - OK",
+        source="Table 92 CBCSWI1, page 32",
+    ),
+]
+
+
+CB_CONDITION_POINTS = [
+    PointDefinition(
+        name="cb52cm_1_closed_position",
+        address=326,
+        data_type="bit",
+        bit=14,
+        label="52CM-1 CB is in closed position",
+        description="CB is in closed position",
+        source="Table 102 SSCBR1, page 39",
+    ),
+    PointDefinition(
+        name="cb52cm_1_invalid_position",
+        address=327,
+        data_type="bit",
+        bit=0,
+        label="52CM-1 CB is in invalid position",
+        description="CB is in invalid position, not positively open or closed",
+        source="Table 102 SSCBR1, page 39",
+    ),
+    PointDefinition(
+        name="cb52cm_1_open_position",
+        address=327,
+        data_type="bit",
+        bit=2,
+        label="52CM-1 CB is in open position",
+        description="CB is in open position",
+        source="Table 102 SSCBR1, page 39",
+    ),
+    PointDefinition(
+        name="cb52cm_1_remaining_life_a",
+        address=2956,
+        data_type="s16",
+        label="52CM-1 CB remaining life phase A",
+        description="CB Remaining life phase A",
+        source="Table 102 SSCBR1, page 40",
+    ),
+    PointDefinition(
+        name="cb52cm_1_remaining_life_b",
+        address=2957,
+        data_type="s16",
+        label="52CM-1 CB remaining life phase B",
+        description="CB Remaining life phase B",
+        source="Table 102 SSCBR1, page 40",
+    ),
+    PointDefinition(
+        name="cb52cm_1_remaining_life_c",
+        address=2958,
+        data_type="s16",
+        label="52CM-1 CB remaining life phase C",
+        description="CB Remaining life phase C",
+        source="Table 102 SSCBR1, page 40",
+    ),
+    PointDefinition(
+        name="cb52cm_1_close_travel_time",
+        address=2959,
+        data_type="u16",
+        scale_factor=100,
+        label="52CM-1 CB closing travel time",
+        description="Travel time of the CB during closing operation",
+        source="Table 102 SSCBR1, page 40",
+    ),
+    PointDefinition(
+        name="cb52cm_1_open_travel_time",
+        address=2960,
+        data_type="u16",
+        scale_factor=100,
+        label="52CM-1 CB opening travel time",
+        description="Travel time of the CB during opening operation",
+        source="Table 102 SSCBR1, page 40",
+    ),
+    PointDefinition(
+        name="cb52cm_1_spring_charging_time",
+        address=2961,
+        data_type="u16",
+        scale_factor=100,
+        label="52CM-1 CB spring charging time",
+        description="The charging time of the CB spring",
+        source="Table 102 SSCBR1, page 40",
+    ),
+]
+
+
+TEST_POINT_GROUPS = {
+    "status": STATUS_POINTS,
+    "breaker": BREAKER_STATUS_POINTS,
+    "condition": CB_CONDITION_POINTS,
+    "measurements": DEFAULT_POINTS,
+}

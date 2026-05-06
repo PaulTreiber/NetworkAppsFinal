@@ -9,3 +9,4 @@ class RelayConfig:
     port: int = 502
     unit_id: int = 1
     timeout_seconds: float = 3.0
+    csv_path: str = "artifacts/ref620_readings.csv"
