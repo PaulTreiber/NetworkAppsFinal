@@ -2,10 +2,12 @@
 
 from dataclasses import dataclass
 
+from pymodbus.client import ModbusTcpClient
+
 from .config import RelayConfig
 
 
-@dataclass(slots=True)
+@dataclass
 class ReadResult:
     address: int
     count: int
@@ -13,11 +15,37 @@ class ReadResult:
 
 
 class Ref620ModbusClient:
-    """Small placeholder backend for future relay operations."""
+    """Small Modbus TCP client for reading relay registers."""
 
     def __init__(self, config: RelayConfig) -> None:
         self.config = config
 
     def read_holding_registers(self, address: int, count: int = 1) -> ReadResult:
-        """Return a stub result until live Modbus transport is implemented."""
-        return ReadResult(address=address, count=count, raw_registers=[0] * count)
+        client = ModbusTcpClient(
+            self.config.host,
+            port=self.config.port,
+            timeout=self.config.timeout_seconds,
+        )
+
+        if not client.connect():
+            raise RuntimeError(
+                f"Could not connect to {self.config.host}:{self.config.port}"
+            )
+
+        try:
+            result = client.read_holding_registers(
+                address=address,
+                count=count,
+                slave=self.config.unit_id,
+            )
+
+            if result.isError():
+                raise RuntimeError(f"Modbus read failed: {result}")
+
+            return ReadResult(
+                address=address,
+                count=count,
+                raw_registers=list(result.registers),
+            )
+        finally:
+            client.close()
