@@ -7,7 +7,7 @@ name = "ref620-modbus-client"
 version = "0.1.0"
 description = "Educational Modbus TCP client for the ABB REF620 ANSI relay."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.9"
 dependencies = []
 
 [tool.setuptools]

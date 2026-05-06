@@ -3,9 +3,9 @@
 from dataclasses import dataclass
 
 
-@dataclass(slots=True)
+@dataclass
 class RelayConfig:
-    host: str = "127.0.0.1"
+    host: str = "192.168.219.50"
     port: int = 502
     unit_id: int = 1
     timeout_seconds: float = 3.0
